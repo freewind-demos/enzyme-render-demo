@@ -1,41 +1,16 @@
 import React from 'react';
-import {shallow} from 'enzyme';
-import sinon from 'sinon';
-import jasmineEnzyme from 'jasmine-enzyme';
+import {render} from 'enzyme';
 
-import MyComponent from '../my-component.jsx';
 import Foo from '../foo.jsx';
 
-describe('<MyComponent />', () => {
-  beforeEach(() => {
-    jasmineEnzyme();
+describe('<Foo />', () => {
+  it('renders three `.foo-bar`s', () => {
+    const wrapper = render(<Foo />);
+    expect(wrapper.find('.foo-bar').length).toEqual(3);
   });
 
-  it('renders three <Foo /> components', () => {
-    const wrapper = shallow(<MyComponent />);
-    expect(wrapper.find(Foo).length).toEqual(3);
-  });
-
-  it('renders an `.icon-star`', () => {
-    const wrapper = shallow(<MyComponent />);
-    expect(wrapper.find('.icon-star').length).toEqual(1);
-  });
-
-  it('renders children when passed in', () => {
-    const wrapper = shallow(
-      <MyComponent>
-        <div className="unique"/>
-      </MyComponent>
-    );
-    expect(wrapper.contains(<div className="unique"/>)).toBeTruthy();
-  });
-
-  it('simulates click events', () => {
-    const onButtonClick = sinon.spy();
-    const wrapper = shallow(
-      <Foo onButtonClick={onButtonClick}/>
-    );
-    wrapper.find('button').simulate('click');
-    expect(onButtonClick.callCount).toEqual(1);
+  it('renders the title', () => {
+    const wrapper = render(<Foo title="unique"/>);
+    expect(wrapper.text().includes('unique')).toBeTruthy();
   });
 });
